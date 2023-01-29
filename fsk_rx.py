@@ -60,9 +60,10 @@ while 1:
 
             print('raw rx:', raw_top, ';', end='')
 
-            msg += chr(b)
-            print('rx byte:', b)
-            print(msg)
+            if b > 10:
+                msg += chr(b)
+                print('rx byte:', b)
+                print(msg)
 
     t += time_per_sample
     i += 1
