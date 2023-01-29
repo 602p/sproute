@@ -19,12 +19,12 @@ freq = freq[start:stop]
 
 print(stop-start, 'useful bins')
 
-tone_step = 180
+tone_step = 150
 tones = list(range(min_freq+tone_step, max_freq, tone_step))
 # tones = tones[:8]
 print(len(tones), 'tones')
 
-simul_tones = 4
+simul_tones = 3
 print(simul_tones, 'simul tones')
 
 tone_bin_size = tone_step / 2
@@ -33,7 +33,7 @@ symbols = [set(x) for x in itertools.combinations(tones, simul_tones)]
 
 print(len(symbols), 'combinations;', math.log2(len(symbols)), 'bits')
 # symbols = symbols[:256]
-# assert(len(symbols) == 256)
+assert(len(symbols) >= 256)
 
 print(len(symbols))
 
