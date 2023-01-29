@@ -53,7 +53,7 @@ while 1:
         if b != last:
             last = b
 
-            print('raw rx:', b)
+            print('raw rx:', b, ';', end='')
 
             if b > 127:
                 b -= 128
