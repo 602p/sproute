@@ -50,6 +50,7 @@ while 1:
 
         if b != last:
             msg += chr(b & 127)
+            last = b
         
         print(msg)
 
