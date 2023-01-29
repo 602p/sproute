@@ -33,13 +33,13 @@ def gen_samples(tones, duration, volume=0.8):
     return output_bytes
 
 
-message = "\n\nLonger message using a homebrew MFSK mode DE KF0CGO.\nMode has 8 tones and transmits 3 simultaneously for 8 bits per symbol.\n\n"
+message = "\n\nLonger message using a homebrew MFSK mode DE KF0CGO.\nMode has 12 tones and transmits 3 simultaneously for 7 bits per symbol.\n\n"
 # message = 'A' * 16
 output = bytes()
 
 # bit_clk = 0.15
 
-output += gen_samples([], bit_clk * 12, 0)
+output += gen_samples([], bit_clk * 4, 0)
 
 i = 0
 for b in bytes(message, encoding='utf-8'):

@@ -4,9 +4,9 @@ import itertools
 
 sr = 44100 * 4  # sampling rate, Hz, must be integer
 
-BLKSZ = 1024 * 8
+BLKSZ = 1024 * 16
 
-bit_clk = (BLKSZ / sr) * 3
+bit_clk = (BLKSZ / sr) * 2
 
 min_freq = 500
 max_freq = 2500
