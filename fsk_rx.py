@@ -58,24 +58,27 @@ while 1:
     highest_power = pairs[0][1]
 
     if highest_power > 5:
-        print(int(clock_hi), list(sorted(top)))
+        
         b = byte_for_tones(top)
+        print(int(clock_hi), list(sorted(top)), byte, b)
 
         if byte is None and clock_hi:
-            if not acceptnext:
-                acceptnext = True
-                continue
-            acceptnext = False
+            # if not acceptnext:
+            #     acceptnext = True
+            #     continue
+            # acceptnext = False
 
             byte = b
         elif byte and not clock_hi:
-            if not acceptnext:
-                acceptnext = True
-                continue
-            acceptnext = False
-            
+            # if not acceptnext:
+            #     acceptnext = True
+            #     continue
+            # acceptnext = False
+
             byte <<= 4
             byte |= b
+
+            print("RX:", byte)
 
             if chr(byte) in string.printable:
                 msg += chr(byte)
