@@ -50,6 +50,7 @@ while 1:
 
         if b != last:
             msg += chr(b & 127)
+            print('rx byte:', b)
             last = b
         
         print(msg)
