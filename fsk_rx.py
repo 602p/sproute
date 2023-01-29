@@ -44,15 +44,21 @@ while 1:
     pairs.sort(key=lambda x: x[1], reverse=True)
     top = [x[0] for x in pairs[:simul_tones+1]]
     top.sort()
+    raw_top = top[:]
+    if clock_tone in top:
+        top.remove(clock_tone)
+    else:
+        top.remove(pairs[simul_tones][0])
+        raw_top = top
     highest_power = pairs[0][1]
 
     if highest_power > 5:
-        b = byte_for_tones(set(top) - {clock_tone})
+        b = byte_for_tones(top)
 
-        if top != last:
-            last = top
+        if raw_top != last:
+            last = raw_top
 
-            print('raw rx:', top, ';', end='')
+            print('raw rx:', raw_top, ';', end='')
 
             msg += chr(b)
             print('rx byte:', b)
