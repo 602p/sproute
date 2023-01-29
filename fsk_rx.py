@@ -24,7 +24,7 @@ print('block_rate:', 1/time_per_sample, '(Hz)')
 start_t = time.time()
 
 msg = ''
-last = 0
+last = {}
 
 while 1:
     block = stream.read(BLKSZ)
@@ -42,21 +42,18 @@ while 1:
 
     pairs = list(tone_power.items())
     pairs.sort(key=lambda x: x[1], reverse=True)
-    top = [x[0] for x in pairs[:simul_tones]]
+    top = [x[0] for x in pairs[:simul_tones+1]]
     top.sort()
     highest_power = pairs[0][1]
 
     if highest_power > 5:
-        b = byte_for_tones(top)
-        print(top, b)
+        b = byte_for_tones(top - {clock_tone})
 
-        if b != last:
-            last = b
+        if top != last:
+            last = top
 
-            print('raw rx:', b, ';', end='')
+            print('raw rx:', top, ';', end='')
 
-            if b > 127:
-                b -= 128
             msg += chr(b)
             print('rx byte:', b)
             print(msg)
