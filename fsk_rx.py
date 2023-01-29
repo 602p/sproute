@@ -56,7 +56,7 @@ while 1:
             print('raw rx:', b)
 
             if b > 127:
-                b -= 127
+                b -= 128
             msg += chr(b)
             print('rx byte:', b)
             print(msg)
