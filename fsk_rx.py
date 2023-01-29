@@ -49,8 +49,8 @@ while 1:
     top = [x[0] for x in pairs[:simul_tones+1]]
     top.sort()
 
-    clock_tone = clock_tone in top
-    if clock_tone in top:
+    clock_hi = clock_tone in top
+    if clock_hi:
         top.remove(clock_tone)
     else:
         top.remove(pairs[simul_tones][0])
@@ -58,15 +58,15 @@ while 1:
     highest_power = pairs[0][1]
 
     if highest_power > 5:
-        print(list(sorted(top)))
+        print(int(clock_hi), list(sorted(top)))
         b = byte_for_tones(top)
 
-        # if not acceptnext:
-        #     acceptnext = True
-        #     continue
-        # acceptnext = False
+        if not acceptnext:
+            acceptnext = True
+            continue
+        acceptnext = False
 
-        if clock_tone:
+        if clock_hi:
             byte = b
         elif byte:
             byte <<= 4
@@ -75,7 +75,7 @@ while 1:
             if chr(byte) in string.printable:
                 msg += chr(byte)
                 # print('rx byte:', byte)
-                os.system('clear')
+                # os.system('clear')
                 print(msg)
 
             byte = None

@@ -37,7 +37,7 @@ def gen_samples(tones, duration, volume=0.8):
 message = 'ABCDEFG'
 output = bytes()
 
-bit_clk *= 2
+bit_clk *= 3
 
 output += gen_samples([], bit_clk * 4, 0)
 
