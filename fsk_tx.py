@@ -33,7 +33,7 @@ def gen_samples(tones, duration, volume=0.8):
     return output_bytes
 
 
-message = "\n\nHello from linux -> windows DE KF0CGO\nLonger message :3\n"
+message = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 output = bytes()
 
 bit_clk = 0.1
