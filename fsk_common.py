@@ -45,4 +45,4 @@ def tones_for_byte(b):
 
 def byte_for_tones(ts):
     ts.sort()
-    return symbols.index(ts)
+    return symbols.index(tuple(ts))

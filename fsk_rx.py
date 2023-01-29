@@ -23,6 +23,9 @@ print('block_rate:', 1/time_per_sample, '(Hz)')
 
 start_t = time.time()
 
+msg = ''
+last = 0
+
 while 1:
     block = stream.read(BLKSZ)
     buf = np.frombuffer(block, dtype=np.float32)
@@ -44,7 +47,11 @@ while 1:
 
     if highest_power > 5:
         b = byte_for_tones(top)
-        print(chr(b))
+
+        if b != last:
+            msg += chr(b & 127)
+        
+        print(msg)
 
     t += time_per_sample
     i += 1
