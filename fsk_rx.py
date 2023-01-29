@@ -61,14 +61,19 @@ while 1:
         print(int(clock_hi), list(sorted(top)))
         b = byte_for_tones(top)
 
-        if not acceptnext:
-            acceptnext = True
-            continue
-        acceptnext = False
+        if byte is None and clock_hi:
+            if not acceptnext:
+                acceptnext = True
+                continue
+            acceptnext = False
 
-        if clock_hi:
             byte = b
-        elif byte:
+        elif byte and not clock_hi:
+            if not acceptnext:
+                acceptnext = True
+                continue
+            acceptnext = False
+            
             byte <<= 4
             byte |= b
 
