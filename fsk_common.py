@@ -34,6 +34,8 @@ tone_bin_size = tone_step / 2
 symbols = [set(x) for x in itertools.combinations(tones[:-1], simul_tones)]
 clock_tone = tones[-1]
 
+print('clock tone:', clock_tone)
+
 print(len(symbols), 'combinations;', math.log2(len(symbols)), 'bits')
 # symbols = symbols[:256]
 assert(len(symbols) >= 256)
