@@ -63,20 +63,19 @@ while 1:
         print(int(clock_hi), list(sorted(top)), byte, b)
 
         if byte is None and clock_hi:
-            # if not acceptnext:
-            #     acceptnext = True
-            #     continue
-            # acceptnext = False
+            if not acceptnext:
+                acceptnext = True
+                continue
+            acceptnext = False
 
             byte = b
-        elif byte and not clock_hi:
-            # if not acceptnext:
-            #     acceptnext = True
-            #     continue
-            # acceptnext = False
+        elif byte is not None and not clock_hi:
+            if not acceptnext:
+                acceptnext = True
+                continue
+            acceptnext = False
 
-            byte <<= 4
-            byte |= b
+            byte = byte + (b << 4)
 
             print("RX:", byte)
 

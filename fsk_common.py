@@ -38,8 +38,8 @@ for t in tones:
             n += 1
     print("Tone", t, "->", n, "bins")
 
-symbols = [set(x) for x in itertools.combinations(tones[:-1], simul_tones)]
-clock_tone = tones[-1]
+symbols = [set(x) for x in itertools.combinations(tones[1:], simul_tones)]
+clock_tone = tones[0]
 
 print('clock tone:', clock_tone)
 
