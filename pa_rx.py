@@ -19,7 +19,7 @@ t = 0
 i = 0
 
 
-clk_time = 0.03
+clk_time = 0.05
 
 time_per_sample = BLKSZ / fs
 

@@ -8,11 +8,6 @@ p = pyaudio.PyAudio()
 
 fs = 44100  # sampling rate, Hz, must be integer
 
-stream = p.open(format=pyaudio.paFloat32,
-                channels=2,
-                rate=fs,
-                output=True)
-
 def gen_samples(f, duration, volume=0.8):
     # volume = 0.5 # range [0.0, 1.0]
     # duration = 0.5  # in seconds, may be float
@@ -32,20 +27,30 @@ def gen_samples(f, duration, volume=0.8):
     return output_bytes
 
 
-message = "Hello, World"
+message = "\n\nHello from linux -> windows DE KF0CGO\nLonger message :3\n"
 output = bytes()
+
+bit_clk = 0.05
+
+
+output += gen_samples(750, bit_clk * 12, 0)
 
 for b in bytes(message, encoding='utf-8'):
     print(b)
 
-    output += gen_samples(750, 0.1, 0.5)
+    output += gen_samples(750, bit_clk, 0.5)
 
     for i in range(8):
         bit = (b >> i) & 1
 
-        output += gen_samples(750, 0.1, 0.5 if not bit else 0.0)
+        output += gen_samples(750, bit_clk, 0.5 if bit else 0.0)
 
-    output += gen_samples(750, 0.1, 0)
+    output += gen_samples(750, bit_clk*2, 0)
+
+stream = p.open(format=pyaudio.paFloat32,
+                channels=2,
+                rate=fs,
+                output=True)
 
 stream.write(output)
 
