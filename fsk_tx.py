@@ -51,6 +51,8 @@ for b in bytes(message, encoding='utf-8'):
     ts = tones_for_byte(b >> 4)
     print(list(sorted(ts)))
     output += gen_samples(ts, bit_clk)
+
+    output += gen_samples([], bit_clk, 0)
     i += 1
 
 input("READY")
