@@ -42,7 +42,9 @@ output += gen_samples([], bit_clk * 12, 0)
 
 for b in bytes(message, encoding='utf-8'):
     print(b)
-    output += gen_samples(tones_for_byte(b), bit_clk)
+    ts = tones_for_byte(b)
+    print(ts)
+    output += gen_samples(ts, bit_clk)
 
 stream = p.open(format=pyaudio.paFloat32,
                 channels=2,
