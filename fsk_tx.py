@@ -49,6 +49,8 @@ for b in bytes(message, encoding='utf-8'):
     output += gen_samples(ts, bit_clk)
     i += 1
 
+input("READY")
+
 stream = p.open(format=pyaudio.paFloat32,
                 channels=2,
                 rate=fs,

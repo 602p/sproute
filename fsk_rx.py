@@ -65,11 +65,12 @@ while 1:
             acceptnext = False
             last = raw_top
 
-            print('raw rx:', raw_top, ';', end='')
+            # print('raw rx:', raw_top, ';', end='')
 
             if chr(b) in string.printable:
                 msg += chr(b)
-                print('rx byte:', b)
+                # print('rx byte:', b)
+                os.system('clear')
                 print(msg)
 
     t += time_per_sample
