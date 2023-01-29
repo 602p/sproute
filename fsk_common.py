@@ -8,8 +8,8 @@ BLKSZ = 1024 * 4
 
 bit_clk = (BLKSZ / sr)
 
-min_freq = 400
-max_freq = 2800
+min_freq = 600
+max_freq = 2500
 
 freq = np.fft.fftfreq(BLKSZ, d=1/sr)
 start = np.argmax(freq > min_freq)
@@ -21,7 +21,7 @@ freq = freq[start:stop]
 
 print(stop-start, 'useful bins')
 
-tone_step = 190
+tone_step = 250
 tones = list(range(min_freq+tone_step, max_freq, tone_step))
 # tones = tones[:8]
 print(len(tones), 'tones')
@@ -45,7 +45,7 @@ print('clock tone:', clock_tone)
 
 print(len(symbols), 'combinations;', math.log2(len(symbols)), 'bits')
 # symbols = symbols[:256]
-assert(len(symbols) >= 127)
+assert(len(symbols) >= 2**4)
 
 print(len(symbols))
 

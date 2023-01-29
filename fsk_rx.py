@@ -24,6 +24,7 @@ print('block_rate:', 1/time_per_sample, '(Hz)')
 
 start_t = time.time()
 
+byte = None
 msg = ''
 last = {}
 
@@ -47,31 +48,36 @@ while 1:
     pairs.sort(key=lambda x: x[1], reverse=True)
     top = [x[0] for x in pairs[:simul_tones+1]]
     top.sort()
-    raw_top = top[:]
+
+    clock_tone = clock_tone in top
     if clock_tone in top:
         top.remove(clock_tone)
     else:
         top.remove(pairs[simul_tones][0])
-        raw_top = top
+
     highest_power = pairs[0][1]
 
     if highest_power > 5:
         b = byte_for_tones(top)
 
-        if raw_top != last:
-            if not acceptnext:
-                acceptnext = True
-                continue
-            acceptnext = False
-            last = raw_top
+        # if not acceptnext:
+        #     acceptnext = True
+        #     continue
+        # acceptnext = False
 
-            # print('raw rx:', raw_top, ';', end='')
+        if clock_tone:
+            byte = b
+        elif byte:
+            byte <<= 4
+            byte |= b
 
-            if chr(b) in string.printable:
-                msg += chr(b)
-                # print('rx byte:', b)
+            if chr(byte) in string.printable:
+                msg += chr(byte)
+                # print('rx byte:', byte)
                 os.system('clear')
                 print(msg)
+
+            byte = None
 
     t += time_per_sample
     i += 1

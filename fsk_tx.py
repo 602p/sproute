@@ -43,9 +43,11 @@ output += gen_samples([], bit_clk * 4, 0)
 
 i = 0
 for b in bytes(message, encoding='utf-8'):
-    print(b, '- ', end='')
-    ts = tones_for_byte(b) | ({clock_tone} if (i%2) else set())
-    print(ts)
+    # print(b, '- ', end='')
+    ts = tones_for_byte(b & 0b1111) | {clock_tone}
+    output += gen_samples(ts, bit_clk)
+
+    ts = tones_for_byte(b >> 4)
     output += gen_samples(ts, bit_clk)
     i += 1
 
