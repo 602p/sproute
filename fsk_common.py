@@ -21,7 +21,7 @@ freq = freq[start:stop]
 
 print(stop-start, 'useful bins')
 
-tone_step = 160
+tone_step = 165
 tones = list(range(min_freq+tone_step, max_freq, tone_step))
 # tones = tones[:8]
 print(len(tones), 'tones')

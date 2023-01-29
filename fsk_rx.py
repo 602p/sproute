@@ -3,6 +3,7 @@ import math
 import time
 import os
 import numpy as np
+import string
 from fsk_common import *
 
 import pyaudio
@@ -60,7 +61,7 @@ while 1:
 
             print('raw rx:', raw_top, ';', end='')
 
-            if b > 10:
+            if chr(b) in string.printable:
                 msg += chr(b)
                 print('rx byte:', b)
                 print(msg)
