@@ -37,7 +37,7 @@ message = "\n\nLonger message using a homebrew MFSK mode DE KF0CGO.\nMode has 8 
 message = 'A' * 32
 output = bytes()
 
-bit_clk = 0.2
+bit_clk = 0.15
 
 output += gen_samples([], bit_clk * 12, 0)
 
