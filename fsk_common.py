@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import itertools
 
 sr = 44100 * 4  # sampling rate, Hz, must be integer
 
@@ -18,31 +19,26 @@ freq = freq[start:stop]
 
 print(stop-start, 'useful bins')
 
-tone_step = 200
+tone_step = 180
 tones = list(range(min_freq+tone_step, max_freq, tone_step))
-tones = tones[:8]
+# tones = tones[:8]
 print(len(tones), 'tones')
 
-simul_tones = 3
-combinations = 1
-for i in range(simul_tones):
-    combinations *= len(tones) - i
-print(simul_tones, 'simul tones;', combinations, 'combinations;', math.log2(combinations), 'bits')
+simul_tones = 4
+print(simul_tones, 'simul tones')
 
 tone_bin_size = tone_step / 2
 
-symbols = []
-for a in tones:
-    for b in tones:
-        for c in tones:
-            if a != b and b != c and a != c:
-                symbols.append(tuple(sorted((a, b, c))))
+symbols = [set(x) for x in itertools.combinations(tones, simul_tones)]
 
-symbols = symbols[:2**int(math.log2(combinations))]
+print(len(symbols), 'combinations;', math.log2(len(symbols)), 'bits')
+# symbols = symbols[:256]
+# assert(len(symbols) == 256)
+
+print(len(symbols))
 
 def tones_for_byte(b):
     return symbols[b]
 
 def byte_for_tones(ts):
-    ts.sort()
-    return symbols.index(tuple(ts))
+    return symbols.index(set(ts))

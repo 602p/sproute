@@ -47,15 +47,19 @@ while 1:
     highest_power = pairs[0][1]
 
     if highest_power > 5:
-        print(top)
         b = byte_for_tones(top)
+        print(top, b)
 
         if b != last:
-            msg += chr(b & 127)
-            print('rx byte:', b)
             last = b
-        
-        print(msg)
+
+            print('raw rx:', b)
+
+            if b > 127:
+                b -= 127
+            msg += chr(b)
+            print('rx byte:', b)
+            print(msg)
 
     t += time_per_sample
     i += 1
