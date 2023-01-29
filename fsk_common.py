@@ -26,6 +26,15 @@ tones = list(range(min_freq+tone_step, max_freq, tone_step))
 # tones = tones[:8]
 print(len(tones), 'tones')
 
+
+for t in tones:
+    n = 0
+    for f in freq:
+        if abs(f - t) < tone_bin_size:
+            n += 1
+    print("Tone", t, "->", n, "bins")
+
+
 simul_tones = 3
 print(simul_tones, 'simul tones')
 
