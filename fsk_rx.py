@@ -58,6 +58,7 @@ while 1:
     highest_power = pairs[0][1]
 
     if highest_power > 5:
+        print(list(sorted(top)))
         b = byte_for_tones(top)
 
         # if not acceptnext:
