@@ -27,6 +27,8 @@ start_t = time.time()
 msg = ''
 last = {}
 
+acceptnext = False
+
 while 1:
     block = stream.read(BLKSZ)
     buf = np.frombuffer(block, dtype=np.float32)
@@ -57,6 +59,10 @@ while 1:
         b = byte_for_tones(top)
 
         if raw_top != last:
+            if not acceptnext:
+                acceptnext = True
+                continue
+            acceptnext = False
             last = raw_top
 
             print('raw rx:', raw_top, ';', end='')

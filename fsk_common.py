@@ -2,9 +2,9 @@ import math
 import numpy as np
 import itertools
 
-sr = 44100 * 4  # sampling rate, Hz, must be integer
+sr = 44100 * 2  # sampling rate, Hz, must be integer
 
-BLKSZ = 1024 * 16
+BLKSZ = 1024 * 8
 
 bit_clk = (BLKSZ / sr) * 2
 
