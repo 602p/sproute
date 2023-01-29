@@ -36,7 +36,7 @@ for a in tones:
     for b in tones:
         for c in tones:
             if a != b and b != c and a != c:
-                symbols.append((a, b, c))
+                symbols.append(tuple(sorted((a, b, c))))
 
 symbols = symbols[:2**int(math.log2(combinations))]
 

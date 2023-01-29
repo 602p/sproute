@@ -43,9 +43,11 @@ while 1:
     pairs = list(tone_power.items())
     pairs.sort(key=lambda x: x[1], reverse=True)
     top = [x[0] for x in pairs[:simul_tones]]
+    top.sort()
     highest_power = pairs[0][1]
 
     if highest_power > 5:
+        print(top)
         b = byte_for_tones(top)
 
         if b != last:
