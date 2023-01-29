@@ -21,7 +21,7 @@ freq = freq[start:stop]
 
 print(stop-start, 'useful bins')
 
-tone_step = 165
+tone_step = 190
 tones = list(range(min_freq+tone_step, max_freq, tone_step))
 # tones = tones[:8]
 print(len(tones), 'tones')
@@ -45,7 +45,7 @@ print('clock tone:', clock_tone)
 
 print(len(symbols), 'combinations;', math.log2(len(symbols)), 'bits')
 # symbols = symbols[:256]
-assert(len(symbols) >= 256)
+assert(len(symbols) >= 127)
 
 print(len(symbols))
 
