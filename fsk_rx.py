@@ -47,7 +47,7 @@ while 1:
     highest_power = pairs[0][1]
 
     if highest_power > 5:
-        b = byte_for_tones(top - {clock_tone})
+        b = byte_for_tones(set(top) - {clock_tone})
 
         if top != last:
             last = top
