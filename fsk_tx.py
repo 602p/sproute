@@ -43,9 +43,9 @@ output += gen_samples([], bit_clk * 12, 0)
 
 i = 0
 for b in bytes(message, encoding='utf-8'):
-    print(b)
-    top = (1<<7) if (i % 2) else 0
-    ts = tones_for_byte(b | top)
+    top = 128 if (i % 2) else 0
+    print(b, b + top)
+    ts = tones_for_byte(b + top)
     print(ts)
     output += gen_samples(ts, bit_clk)
     i += 1
