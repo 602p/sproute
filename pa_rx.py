@@ -66,7 +66,7 @@ while 1:
         # print("End Frame:", frame_bits, num, chr(num))
         if num:
             msg += chr(num)
-            os.system("clear")
+            # os.system("clear")
             print(msg)
         frame_bits = []
 
