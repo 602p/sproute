@@ -93,21 +93,21 @@ stream.close()
 p.terminate()
 
 
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
-# fig, ax = plt.subplots()
+fig, ax = plt.subplots()
 
-# plt.plot(freq, fft)
+plt.plot(freq, fft)
 
-# print(pairs)
+print(pairs)
 
-# freqstep = freq[1] - freq[0]
-# binwidth = freqstep * bin_coalesce
-# for t in tonebins:
-#     ax.add_patch(plt.Rectangle((t-(binwidth/2), 0), binwidth, max(fft), color='b', fill=False))
+freqstep = freq[1] - freq[0]
+binwidth = freqstep * bin_coalesce
+for t in tonebins:
+    ax.add_patch(plt.Rectangle((t-(binwidth/2), 0), binwidth, max(fft), color='b', fill=False))
 
-# for f, v in pairs[:2]:
-#     print("F", f, "V", v)
-#     ax.add_patch(plt.Rectangle((f-10, 0), 20, max(fft), color='r'))
+for f, v in pairs[:2]:
+    print("F", f, "V", v)
+    ax.add_patch(plt.Rectangle((f-10, 0), 20, max(fft), color='r'))
 
-# plt.show()
+plt.show()

@@ -61,7 +61,7 @@ for b in bytes(message, encoding='utf-8'):
 input("READY")
 
 stream = p.open(format=pyaudio.paFloat32,
-                output_device_index=tx_dev_index,
+                #output_device_index=tx_dev_index,
                 channels=2,
                 rate=sr,
                 output=True)
