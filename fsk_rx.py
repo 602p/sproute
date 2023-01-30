@@ -28,10 +28,8 @@ while 1:
     block = stream.read(blk_size)
     buf = np.frombuffer(block, dtype=np.float32)
 
-    fft = np.fft.fft(buf)
-    fft = fft[start:stop]
-
-    break
+    fft = np.fft.rfft(buf)
+    fft = np.abs(fft[start:stop])**2
 
     pairs_raw = list(zip(freq, fft))
 
@@ -52,6 +50,8 @@ while 1:
         top.remove(clock_tone)
     else:
         top.remove(pairs[simul_tones][0])
+
+    break
 
     highest_power = pairs[0][1]
 
@@ -93,8 +93,21 @@ stream.close()
 p.terminate()
 
 
-import matplotlib.pyplot as plt
-plt.plot(freq, np.abs(fft))
+# import matplotlib.pyplot as plt
 
-# plt.xlim(0, 5000)
-plt.show()
+# fig, ax = plt.subplots()
+
+# plt.plot(freq, fft)
+
+# print(pairs)
+
+# freqstep = freq[1] - freq[0]
+# binwidth = freqstep * bin_coalesce
+# for t in tonebins:
+#     ax.add_patch(plt.Rectangle((t-(binwidth/2), 0), binwidth, max(fft), color='b', fill=False))
+
+# for f, v in pairs[:2]:
+#     print("F", f, "V", v)
+#     ax.add_patch(plt.Rectangle((f-10, 0), 20, max(fft), color='r'))
+
+# plt.show()

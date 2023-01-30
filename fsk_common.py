@@ -38,7 +38,7 @@ print('bit:', bit_clk, 's; blk:', blk_time, 's (',blk_size,' S)')
 min_freq = 300
 max_freq = 2800
 
-freq = np.fft.fftfreq(blk_size, d=1/sr)
+freq = np.fft.rfftfreq(blk_size, d=1/sr)
 start = np.argmax(freq > min_freq)
 stop = np.argmax(freq > max_freq)
 
