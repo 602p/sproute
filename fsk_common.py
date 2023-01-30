@@ -4,23 +4,25 @@ import itertools
 
 import sounddevice
 
-dev_index = None
+rx_dev_index = None
+tx_dev_index = None
 
 # print(sounddevice.query_devices())
 
 for i, dev in enumerate(sounddevice.query_devices()):
-    if dev['name'].startswith("USB Audio Device"):
-        dev_index = i
-        break
+    if dev['name'].startswith("USB Audio Device") and dev['max_input_channels']:
+        rx_dev_index = i
+    if dev['name'].startswith("USB Audio Device") and dev['max_output_channels']:
+        tx_dev_index = i
 
-assert dev_index is not None
+assert rx_dev_index is not None and tx_dev_index is not None
 
 sr = 48000  # sampling rate, Hz, must be integer
 
-sounddevice.check_input_settings(device=dev_index, channels=1, samplerate=sr)
-sounddevice.check_output_settings(device=dev_index, channels=2, samplerate=sr)
+sounddevice.check_input_settings(device=rx_dev_index, channels=1, samplerate=sr)
+sounddevice.check_output_settings(device=tx_dev_index, channels=2, samplerate=sr)
 
-print("dev", dev_index, "/", dev['name'], "; sr", sr, "OK")
+print("dev", rx_dev_index, "/", tx_dev_index, "=", dev['name'], "; sr", sr, "OK")
 
 bit_clk = 0.1
 simul_tones = 1

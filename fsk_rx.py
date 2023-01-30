@@ -11,6 +11,7 @@ import pyaudio
 p = pyaudio.PyAudio()
 
 stream = p.open(format=pyaudio.paFloat32,
+                input_device_index=rx_dev_index,
                 channels=1,
                 rate=sr,
                 input=True)
@@ -30,7 +31,7 @@ while 1:
     fft = np.fft.fft(buf)
     fft = fft[start:stop]
 
-    pairs = list(zip(freqs, fft))
+    pairs = list(zip(freq, fft))
     pairs.sort(key=lambda x: x[1], reverse=True)
     top = [x[0] for x in pairs[:simul_tones+1]]
     top.sort()
