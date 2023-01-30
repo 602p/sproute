@@ -31,6 +31,8 @@ while 1:
     fft = np.fft.fft(buf)
     fft = fft[start:stop]
 
+    break
+
     pairs_raw = list(zip(freq, fft))
 
     pairs = []
@@ -91,8 +93,8 @@ stream.close()
 p.terminate()
 
 
-# import matplotlib.pyplot as plt
-# plt.plot(freq, np.abs(fft))
+import matplotlib.pyplot as plt
+plt.plot(freq, np.abs(fft))
 
-# # plt.xlim(0, 5000)
-# plt.show()
+# plt.xlim(0, 5000)
+plt.show()

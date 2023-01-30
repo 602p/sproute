@@ -38,23 +38,25 @@ output = bytes()
 
 # bit_clk *= 3
 
-output += gen_samples([], bit_clk * 4, 0)
+output = gen_samples([500, 1000, 1500], 3)
 
-i = 0
-for b in bytes(message, encoding='utf-8'):
-    print(b, end=' ')
-    ts = tones_for_byte(b & 0b1111) | {clock_tone}
-    print(list(sorted(ts)), end=' ')
-    output += gen_samples(ts, bit_clk)
+# output += gen_samples([], bit_clk * 4, 0)
 
-    output += gen_samples([], bit_clk, 0)
+# i = 0
+# for b in bytes(message, encoding='utf-8'):
+#     print(b, end=' ')
+#     ts = tones_for_byte(b & 0b1111) | {clock_tone}
+#     print(list(sorted(ts)), end=' ')
+#     output += gen_samples(ts, bit_clk)
 
-    ts = tones_for_byte(b >> 4)
-    print(list(sorted(ts)))
-    output += gen_samples(ts, bit_clk)
+#     output += gen_samples([], bit_clk, 0)
 
-    output += gen_samples([], bit_clk, 0)
-    i += 1
+#     ts = tones_for_byte(b >> 4)
+#     print(list(sorted(ts)))
+#     output += gen_samples(ts, bit_clk)
+
+#     output += gen_samples([], bit_clk, 0)
+#     i += 1
 
 input("READY")
 
