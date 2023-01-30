@@ -15,13 +15,6 @@ stream = p.open(format=pyaudio.paFloat32,
                 rate=sr,
                 input=True)
 
-t = 0
-i = 0
-
-time_per_sample = BLKSZ / sr
-
-print('block_rate:', 1/time_per_sample, '(Hz)')
-
 start_t = time.time()
 
 byte = None
@@ -31,20 +24,13 @@ last = {}
 acceptnext = False
 
 while 1:
-    block = stream.read(BLKSZ)
+    block = stream.read(blk_size)
     buf = np.frombuffer(block, dtype=np.float32)
 
     fft = np.fft.fft(buf)
     fft = fft[start:stop]
 
-    tone_power = {k:0 for k in tones}
-
-    for f, v in zip(freq, fft):
-        for t in tones:
-            if abs(f - t) < tone_bin_size:
-                tone_power[t] += abs(v)
-
-    pairs = list(tone_power.items())
+    pairs = list(zip(freqs, fft))
     pairs.sort(key=lambda x: x[1], reverse=True)
     top = [x[0] for x in pairs[:simul_tones+1]]
     top.sort()
@@ -87,8 +73,6 @@ while 1:
 
             byte = None
 
-    t += time_per_sample
-    i += 1
 
 
 stream.stop_stream()
