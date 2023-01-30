@@ -36,7 +36,7 @@ message = "\n\nMessage using a homebrew MFSK mode DE KF0CGO.\n\n"
 message = '[ABCDEF]'
 output = bytes()
 
-# bit_clk *= 3
+bit_clk *= 3
 
 # output = gen_samples([500], 3)
 
