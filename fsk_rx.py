@@ -31,7 +31,16 @@ while 1:
     fft = np.fft.fft(buf)
     fft = fft[start:stop]
 
-    pairs = list(zip(freq, fft))
+    pairs_raw = list(zip(freq, fft))
+
+    pairs = []
+    while len(pairs_raw) >= bin_coalesce:
+        ps = pairs_raw[:bin_coalesce]
+        del pairs_raw[:bin_coalesce]
+        pairs.append((ps[bin_coalesce//2][0], sum(x[1] for x in ps)))
+
+    # print(pairs)
+
     pairs.sort(key=lambda x: x[1], reverse=True)
     top = [x[0] for x in pairs[:simul_tones+1]]
     top.sort()

@@ -26,8 +26,9 @@ print("dev", rx_dev_index, "/", tx_dev_index, "=", dev['name'], "; sr", sr, "OK"
 
 bit_clk = 0.1
 simul_tones = 1
+bin_coalesce = 3
 
-blk_time = bit_clk / 3
+blk_time = bit_clk / 4
 
 blk_size = int(blk_time * sr)
 blk_time = blk_size / sr # exact number
@@ -45,12 +46,21 @@ freq = freq[start:stop]
 
 print(freq, '--', len(freq), 'tones')
 
-tones = list(freq)
+tonebins = []
+from_freq = list(freq)
+while len(from_freq)>=bin_coalesce:
+    for _ in range(bin_coalesce):
+        tonebins.append(from_freq[:bin_coalesce][bin_coalesce//2])
+        del from_freq[:bin_coalesce]
+
+print(tonebins,len(tonebins), 'bins')
+
+# tones = list(freq)
 
 print(simul_tones, 'simul tones')
 
-symbols = [set(x) for x in itertools.combinations(tones[:-1], simul_tones)]
-clock_tone = tones[-1]
+symbols = [set(x) for x in itertools.combinations(tonebins[:-1], simul_tones)]
+clock_tone = tonebins[-1]
 
 print('clock tone:', clock_tone)
 
