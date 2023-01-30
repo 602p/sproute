@@ -24,9 +24,9 @@ sounddevice.check_output_settings(device=tx_dev_index, channels=2, samplerate=sr
 
 print("dev", rx_dev_index, "/", tx_dev_index, "=", dev['name'], "; sr", sr, "OK")
 
-bit_clk = 0.1
+bit_clk = 0.4
 simul_tones = 1
-bin_coalesce = 3
+bin_coalesce = 14
 
 blk_time = bit_clk / 4
 
@@ -49,9 +49,8 @@ print(freq, '--', len(freq), 'tones')
 tonebins = []
 from_freq = list(freq)
 while len(from_freq)>=bin_coalesce:
-    for _ in range(bin_coalesce):
-        tonebins.append(from_freq[:bin_coalesce][bin_coalesce//2])
-        del from_freq[:bin_coalesce]
+    tonebins.append(from_freq[:bin_coalesce][bin_coalesce//2])
+    del from_freq[:bin_coalesce]
 
 print(tonebins,len(tonebins), 'bins')
 
