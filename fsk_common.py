@@ -27,7 +27,7 @@ print("dev", rx_dev_index, "/", tx_dev_index, "=", dev['name'], "; sr", sr, "OK"
 bit_clk = 0.1
 simul_tones = 1
 
-blk_time = bit_clk / 4
+blk_time = bit_clk / 3
 
 blk_size = int(blk_time * sr)
 blk_time = blk_size / sr # exact number
