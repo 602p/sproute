@@ -10,9 +10,9 @@ tx_dev_index = None
 # print(sounddevice.query_devices())
 
 for i, dev in enumerate(sounddevice.query_devices()):
-    if dev['name'].startswith("USB Audio Device") and dev['max_input_channels']:
+    if "USB Audio Device" in dev['name'] and dev['max_input_channels']:
         rx_dev_index = i
-    if dev['name'].startswith("USB Audio Device") and dev['max_output_channels']:
+    if "USB Audio Device" in dev['name'] and dev['max_output_channels']:
         tx_dev_index = i
 
 assert rx_dev_index is not None and tx_dev_index is not None
