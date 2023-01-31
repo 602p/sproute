@@ -7,7 +7,7 @@ import random
 
 import sounddevice
 
-message = "This message sent using a homebrew\naudio interface and homebrew\nFSK digimode DE KF0CGO.\nOver just Baofengs!\n ~~ (:3) (:3) (:3) ~~"
+message = "This message sent using a homebrew\naudio interface and homebrew\nFSK digimode DE KF0CGO.\nOver just Baofengs!\n ~~ (:3) (:3) (:3) ~~\n"
 
 
 def get_tx_dev(phys_sr):
@@ -30,13 +30,14 @@ phys_sr = 48000  # sampling rate, Hz, must be integer
 
 downscale = 1
 
-bit_clk = 0.006
+bit_clk = 0.00575 * downscale
+tx_bit_clk = bit_clk * 1.05 #* 30
 
 phys_blk_time = bit_clk
 interpolate_factor = 1
 window_blks = 20
 
-bin_coalesce = 3 * downscale
+bin_coalesce = int(3 * downscale * (0.95 if downscale!=1 else 1))
 simul_tones = 1
 
 phys_blk_size = int(phys_blk_time * phys_sr)

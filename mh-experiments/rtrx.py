@@ -51,7 +51,8 @@ def signaltonoise(a, axis=0, ddof=0):
     return np.where(sd == 0, 0, m/sd)
 
 recvd = ''
-symwin = [-1] * 3
+symwin = ['X'] * int(window_blks * 0.8)
+
 lastsym = 0
 working_byte = 0
 working_byte_bits = 0
@@ -61,7 +62,7 @@ def get_padded_working_byte():
     s = bin(working_byte)[2:]
     return '-'*(8-working_byte_bits) + '0'*(working_byte_bits-len(s)) + s
 
-snr_cutoff = 8
+snr_cutoff = 3.8
 
 window = [b'\0'*chunk_size*4] * window_blks
 
@@ -69,15 +70,21 @@ rx_clock = pygame.time.Clock()
 
 lastframe = 0
 
-last_sym = time.time()
+last_lock_time = time.time()
+
+start_time = last_lock_time
+time_by_samples = 0
 
 while 1:
     ms = rx_clock.tick()
-    rps = 1000/ms if ms else 0
+    now = time.time()
+    realtime_frac = time_by_samples / (now - start_time)
     # print('rate:', rps, 'slip:', (1/chunk_time) - rps)
 
     window.append(stream.read(chunk_size, exception_on_overflow=True))
     del window[0]
+
+    time_by_samples += chunk_time
 
     phys_block = b''.join(window)
 
@@ -106,16 +113,19 @@ while 1:
 
     snr = pairs[0][1] / sum([x[1] for x in pairs[simul_tones:]])
 
-    # time_since_last_sym = 
+    time_since_last_sym = 0 # now - last_lock_time
 
-    if snr > snr_cutoff:
+    if snr > snr_cutoff or time_since_last_sym > tx_bit_clk:
         b = byte_for_tones(top)
-        print('RX SYM:', b)
 
         symwin.append(b)
         del symwin[0]
 
-        if len([x for x in symwin if x==b]) == 2:
+
+        print('RX SYM:', b, '/', ''.join(map(str, symwin)))
+
+        if len([x for x in symwin if x==b]) >= len(symwin)*0.4:
+            last_lock_time = now
             print('LOCK SYM:', b)
 
             if b != lastsym:
@@ -132,15 +142,21 @@ while 1:
                     working_byte = 0
                     working_byte_bits = 0
                     print('RECVD UPDATE:', recvd)
-                    
+
                     # if not message.startswith(recvd):
                     #     break
 
     else:
+        symwin.append('X')
+        del symwin[0]
+
+        if len([x for x in symwin if x=='X']) == len(symwin):
+            working_byte = 0
+            working_byte_bits = 0
         print('NO', snr)
 
-    if (time.time() - lastframe) > 1/30:
-        lastframe = time.time()
+    if (now - lastframe) > 1/40:
+        lastframe = now
         screen.fill((0,0,0))
 
         freqstep = freq[1] - freq[0]
@@ -165,9 +181,10 @@ while 1:
         for t in tonebins:
             pygame.draw.rect(screen, (0,0,255), ((t-(binwidth/2))/hnorm, 0, binwidth/hnorm, height), width=2)
 
-        binwidth = freqstep * bin_coalesce
         for t in top:
             pygame.draw.rect(screen, (255,0,0), ((t-(binwidth/2))/hnorm + 5, 5, binwidth/hnorm - 5, height - 5), width=5)
+        for t in tones_for_byte(lastsym):
+            pygame.draw.rect(screen, (100,50,50), ((t-(binwidth/2))/hnorm + 5, 5, binwidth/hnorm - 5, height - 5), width=5)
 
         if snr > snr_cutoff:
             draw("D:"+str(b), (0, 0), color=(100,255,100))
@@ -175,7 +192,7 @@ while 1:
             draw("SQL", (0, 0), color=(255,200,200))
 
         draw(f"SNR: {snr:5.1f}", (0, 80))
-        draw(f"RPS: {rps:2.1f} / {1/chunk_time:2.1f}", (0, 160))
+        draw(f"RT: {100*realtime_frac:2.0f}%", (0, 160))
 
         draw(f"SW:{''.join(map(str, symwin))}; C:{get_padded_working_byte()}", (0, 240))
 
