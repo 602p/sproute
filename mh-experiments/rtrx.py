@@ -42,10 +42,17 @@ font = pygame.font.SysFont("monospace", 80, True)
 def draw(text, pos, color=(255,255,255)):
     screen.blit(font.render(text, True, color), pos)
 
+def signaltonoise(a, axis=0, ddof=0):
+    a = np.asanyarray(a)
+    m = a.mean(axis)
+    sd = a.std(axis=axis, ddof=ddof)
+    return np.where(sd == 0, 0, m/sd)
+
+
 # last = [0]*len(freq)
 
 recvd = ''
-symwin = [-1] * 4
+symwin = [-1] * 3
 lastsym = 0
 working_byte = 0
 working_byte_bits = 0
@@ -79,6 +86,8 @@ while 1:
     pairs.sort(key=lambda x: x[1], reverse=True)
     top = [x[0] for x in pairs[:simul_tones]]
     top.sort()
+
+    snr = pairs[0][1] / sum([x[1] for x in pairs[simul_tones:]])
 
     # clock_hi = clock_tone in top
     # if clock_hi:
@@ -116,7 +125,7 @@ while 1:
         for t in top:
             pygame.draw.rect(screen, (255,0,0), ((t-(binwidth/2))/hnorm + 5, 5, binwidth/hnorm - 5, height - 5), width=5)
 
-    if math.log(pairs[0][1]) > -5:
+    if snr > 8:
         b = byte_for_tones(top)
         print('RX SYM:', b)
 
@@ -143,12 +152,13 @@ while 1:
 
         draw("D:"+str(b), (0, 0), color=(100,255,100))
     else:
-        print('NO', pairs[0][1])
+        print('NO', snr) #pairs[0][1])
         draw("SQL", (0, 0), color=(255,200,200))
 
 
-    draw(f"T1:e{math.log(pairs[0][1]):5.1f}", (0, 80))
-    draw(f"T2:e{math.log(pairs[1][1]):5.1f}", (0, 160))
+    # draw(f"T1:e{math.log(pairs[0][1]):5.1f}", (0, 80))
+    # draw(f"T2:e{math.log(pairs[1][1]):5.1f}", (0, 160))
+    draw(f"SNR{snr:5.1f}", (0, 80))
 
     draw(f"SW:{''.join(map(str, symwin))}", (0, 240))
 
@@ -157,6 +167,8 @@ while 1:
         draw("R:"+line, (0, 320 + (i*80)), color=(255, 255, 255))
 
     pygame.display.flip()
+
+    # time.sleep(0.1)
 
 # import matplotlib.pyplot as plt
 

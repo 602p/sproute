@@ -25,7 +25,7 @@ frames += [frames[-1]] * 10
 
 output = bytes()
 
-bit_clk *= 1.8
+bit_clk *= 1.7
 
 stream = p.open(format=pyaudio.paFloat32,
                 #output_device_index=tx_dev_index,
@@ -33,7 +33,7 @@ stream = p.open(format=pyaudio.paFloat32,
                 rate=sr,
                 output=True)
 
-output = bytes() #gen_samples([], 0.2)
+output = gen_samples([], 0.2)
 
 for char, nybble, sym in frames:
     print('C:', char, 'NYB:', bin(nybble), 'TX SYM:', sym)
