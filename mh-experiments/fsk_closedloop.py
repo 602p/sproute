@@ -41,7 +41,7 @@ pairs = []
 while len(pairs_raw) >= bin_coalesce:
     ps = pairs_raw[:bin_coalesce]
     del pairs_raw[:bin_coalesce]
-    pairs.append((ps[bin_coalesce//2][0], sum(x[1] for x in ps)))
+    pairs.append((sum(x[0] for x in ps)/len(ps), sum(x[1] for x in ps)))
 
 # print(pairs)
 

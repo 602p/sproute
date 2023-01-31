@@ -9,7 +9,7 @@ import pyaudio
 
 p = pyaudio.PyAudio()
 
-message = "This message sent using a homebrew\naudio interface and homebrew\nFSK digimode DE KF0CGO.\nOver just Baofengs!\n ~~ (:3) (:3) (:3) ~~"
+# message = "This message sent using a homebrew\naudio interface and homebrew\nFSK digimode DE KF0CGO.\nOver just Baofengs!\n ~~ (:3) (:3) (:3) ~~"
 # message = "ABCD" * 10
 
 nsyms = len(symbols)
@@ -25,12 +25,12 @@ frames += [frames[-1]] * 10
 
 output = bytes()
 
-bit_clk *= 1.7
+bit_clk *= 1.5 # * 10
 
 stream = p.open(format=pyaudio.paFloat32,
-                #output_device_index=tx_dev_index,
+                output_device_index=get_tx_dev(phys_sr),
                 channels=2,
-                rate=sr,
+                rate=phys_sr,
                 output=True)
 
 output = gen_samples([], 0.2)
