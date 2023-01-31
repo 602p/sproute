@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import itertools
+import array
 
 import sounddevice
 
@@ -15,7 +16,7 @@ for i, dev in enumerate(sounddevice.query_devices()):
     if "USB Audio Device" in dev['name'] and dev['max_output_channels']:
         tx_dev_index = i
 
-assert rx_dev_index is not None and tx_dev_index is not None
+# assert rx_dev_index is not None and tx_dev_index is not None
 
 sr = 48000  # sampling rate, Hz, must be integer
 
@@ -24,9 +25,9 @@ sounddevice.check_output_settings(device=tx_dev_index, channels=2, samplerate=sr
 
 print("dev", rx_dev_index, "/", tx_dev_index, "=", dev['name'], "; sr", sr, "OK")
 
-bit_clk = 0.4
-simul_tones = 1
-bin_coalesce = 14
+bit_clk = 0.01
+simul_tones = 2
+bin_coalesce = 1
 
 blk_time = bit_clk / 4
 
@@ -71,3 +72,28 @@ def tones_for_byte(b):
 
 def byte_for_tones(ts):
     return symbols.index(set(ts))
+
+ptt_tone_volume = 0
+
+def gen_samples(tones, duration, volume=0.8, ptt_tone=True):
+    # volume = 0.5 # range [0.0, 1.0]
+    # duration = 0.5  # in seconds, may be float
+    # f = 1000.0  # sine frequency, Hz, may be float
+
+    # generate samples, note conversion to float32 array
+    num_samples = int(sr * duration)
+
+    out_samples = []
+    for i in range(0, num_samples):
+        samp = 0
+        for tone in tones:
+            samp += volume/len(tones) * math.sin(2 * math.pi * i * tone / sr)
+
+        out_samples.append(samp)
+
+        if ptt_tone:
+            out_samples.append(ptt_tone_volume * math.sin(2 * math.pi * i * 1000 / sr))
+        
+    output_bytes = array.array('f', out_samples).tobytes()
+
+    return output_bytes
