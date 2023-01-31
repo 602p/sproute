@@ -44,8 +44,15 @@ def draw(text, pos, color=(255,255,255)):
 
 # last = [0]*len(freq)
 
+recvd = ''
+symwin = [-1] * 4
+lastsym = 0
+working_byte = 0
+working_byte_bits = 0
+
 while 1:
     block = stream.read(blk_size, exception_on_overflow=False)
+
     buf = np.frombuffer(block, dtype=np.float32)
 
     tuckey_window=signal.tukey(len(buf),0.5,True)
@@ -81,46 +88,73 @@ while 1:
 
     screen.fill((0,0,0))
 
+    if True:
 
-    freqstep = freq[1] - freq[0]
+        freqstep = freq[1] - freq[0]
 
-    vnorm = pairs[0][1]*1.1 #max(vnorm, pairs[0][1]*1.1)
-    
-    height = 1000
+        vnorm = pairs[0][1]*1.1 #max(vnorm, pairs[0][1]*1.1)
+        
+        height = 1000
 
-    last_x = freq[0]-freqstep
-    last_y = 0
+        last_x = freq[0]-freqstep
+        last_y = 0
 
-    hnorm = freq[-1] / 1800
+        hnorm = freq[-1] / 1800
 
-    for f, v in zip(freq, fft):
-        pygame.draw.line(screen, (0,255,0), (last_x/hnorm,height - last_y*height/vnorm), (f/hnorm, height - v*height/vnorm))
-        last_x = f
-        last_y = v
+        for f, v in zip(freq, fft):
+            pygame.draw.line(screen, (0,255,0), (last_x/hnorm,height - last_y*height/vnorm), (f/hnorm, height - v*height/vnorm))
+            last_x = f
+            last_y = v
 
-    pygame.draw.line(screen, (0,255,0), (last_x/hnorm,height - last_y*height/vnorm), ((freq[-1]+freqstep)/hnorm, height))
+        pygame.draw.line(screen, (0,255,0), (last_x/hnorm,height - last_y*height/vnorm), ((freq[-1]+freqstep)/hnorm, height))
 
-    binwidth = freqstep * bin_coalesce
-    for t in tonebins:
-        pygame.draw.rect(screen, (0,0,255), ((t-(binwidth/2))/hnorm, 0, binwidth/hnorm, height), width=2)
+        binwidth = freqstep * bin_coalesce
+        for t in tonebins:
+            pygame.draw.rect(screen, (0,0,255), ((t-(binwidth/2))/hnorm, 0, binwidth/hnorm, height), width=2)
 
-    binwidth = freqstep * bin_coalesce
-    for t in top:
-        pygame.draw.rect(screen, (255,0,0), ((t-(binwidth/2))/hnorm + 5, 5, binwidth/hnorm - 5, height - 5), width=5)
+        binwidth = freqstep * bin_coalesce
+        for t in top:
+            pygame.draw.rect(screen, (255,0,0), ((t-(binwidth/2))/hnorm + 5, 5, binwidth/hnorm - 5, height - 5), width=5)
 
-    if math.log(pairs[0][1]) > -14:
-        try:
-            b = byte_for_tones(top)
-        except ValueError:
-            b = -1
-        print(b)
-        draw("D:"+str(b), (0, 0), color=(200,255,200) if b!=-1 else (255,100,100))
+    if math.log(pairs[0][1]) > -5:
+        b = byte_for_tones(top)
+        print('RX SYM:', b)
+
+        symwin.append(b)
+        del symwin[0]
+
+        if len([x for x in symwin if x==b]) == 2:
+            print('LOCK SYM:', b)
+
+            if b != lastsym:
+                delta = ((b - lastsym) % len(symbols)) - 1
+                lastsym = b
+                print('NEW SYM:', b, 'NYB:', bin(delta))
+
+                working_byte <<= 2
+                working_byte += delta
+                working_byte_bits += 2
+                print('wb:', bin(working_byte), 'bits:', working_byte_bits)
+                if working_byte_bits == 8:
+                    recvd += chr(working_byte)
+                    working_byte = 0
+                    working_byte_bits = 0
+                    print('RECVD UPDATE:', recvd)
+
+        draw("D:"+str(b), (0, 0), color=(100,255,100))
     else:
         print('NO', pairs[0][1])
         draw("SQL", (0, 0), color=(255,200,200))
 
+
     draw(f"T1:e{math.log(pairs[0][1]):5.1f}", (0, 80))
     draw(f"T2:e{math.log(pairs[1][1]):5.1f}", (0, 160))
+
+    draw(f"SW:{''.join(map(str, symwin))}", (0, 240))
+
+
+    for i, line in enumerate(recvd.split('\n')):
+        draw("R:"+line, (0, 320 + (i*80)), color=(255, 255, 255))
 
     pygame.display.flip()
 

@@ -25,9 +25,9 @@ sounddevice.check_output_settings(device=tx_dev_index, channels=2, samplerate=sr
 
 print("dev", rx_dev_index, "/", tx_dev_index, "=", dev['name'], "; sr", sr, "OK")
 
-bit_clk = 0.1
-simul_tones = 2
-bin_coalesce = 8
+bit_clk = 0.028
+simul_tones = 1
+bin_coalesce = 3
 
 blk_time = bit_clk / 4
 
