@@ -24,11 +24,17 @@ last = {}
 
 acceptnext = False
 
+def abs2(x):
+        return x.real**2 + x.imag**2
+
 while 1:
     block = stream.read(blk_size)
     buf = np.frombuffer(block, dtype=np.float32)
 
-    fft = np.fft.rfft(buf)
+    tuckey_window=signal.tukey(len(buf),0.5,True)
+    buf=buf*tuckey_window
+    buf -= np.mean(buf)
+    fft = np.fft.rfft(buf, norm='ortho')
     fft = np.abs(fft[start:stop])**2
 
     pairs_raw = list(zip(freq, fft))
@@ -108,6 +114,6 @@ for t in tonebins:
 
 for f, v in pairs[:2]:
     print("F", f, "V", v)
-    ax.add_patch(plt.Rectangle((f-10, 0), 20, max(fft), color='r'))
+    ax.add_patch(plt.Rectangle((f-binwidth/4, 0), binwidth/2, max(fft), color=(1, 0.8, 0.8)))
 
 plt.show()

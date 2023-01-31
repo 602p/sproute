@@ -25,9 +25,9 @@ sounddevice.check_output_settings(device=tx_dev_index, channels=2, samplerate=sr
 
 print("dev", rx_dev_index, "/", tx_dev_index, "=", dev['name'], "; sr", sr, "OK")
 
-bit_clk = 0.01
+bit_clk = 0.1
 simul_tones = 2
-bin_coalesce = 1
+bin_coalesce = 8
 
 blk_time = bit_clk / 4
 
@@ -49,6 +49,7 @@ print(freq, '--', len(freq), 'tones')
 
 tonebins = []
 from_freq = list(freq)
+del from_freq[:(len(from_freq)%bin_coalesce)//2]
 while len(from_freq)>=bin_coalesce:
     tonebins.append(from_freq[:bin_coalesce][bin_coalesce//2])
     del from_freq[:bin_coalesce]
@@ -59,10 +60,10 @@ print(tonebins,len(tonebins), 'bins')
 
 print(simul_tones, 'simul tones')
 
-symbols = [set(x) for x in itertools.combinations(tonebins[:-1], simul_tones)]
-clock_tone = tonebins[-1]
+symbols = [set(x) for x in itertools.combinations(tonebins, simul_tones)]
+# clock_tone = tonebins[-1]
 
-print('clock tone:', clock_tone)
+# print('clock tone:', clock_tone)
 
 print(len(symbols), 'combinations;', math.log2(len(symbols)), 'bits')
 # assert(len(symbols) >= 2**4)
@@ -73,7 +74,7 @@ def tones_for_byte(b):
 def byte_for_tones(ts):
     return symbols.index(set(ts))
 
-ptt_tone_volume = 0
+ptt_tone_volume = 1
 
 def gen_samples(tones, duration, volume=0.8, ptt_tone=True):
     # volume = 0.5 # range [0.0, 1.0]
