@@ -75,6 +75,8 @@ last_lock_time = time.time()
 start_time = last_lock_time
 time_by_samples = 0
 
+stream.read(chunk_size, exception_on_overflow=False)
+
 while 1:
     ms = rx_clock.tick()
     now = time.time()
@@ -155,7 +157,7 @@ while 1:
             working_byte_bits = 0
         print('NO', snr)
 
-    if (now - lastframe) > 1/40:
+    if (now - lastframe) > 1/30:
         lastframe = now
         screen.fill((0,0,0))
 

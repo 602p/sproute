@@ -28,7 +28,7 @@ def get_rx_dev(phys_sr):
 
 phys_sr = 48000  # sampling rate, Hz, must be integer
 
-downscale = 1
+downscale = 2
 
 bit_clk = 0.00575 * downscale
 tx_bit_clk = bit_clk * 1.05 #* 30
@@ -92,7 +92,7 @@ def tones_for_byte(b):
 def byte_for_tones(ts):
     return symbols.index(set(ts))
 
-ptt_tone_volume = 0
+ptt_tone_volume = 1
 
 def gen_samples(tones, duration, volume=0.8, ptt_tone=True):
     # volume = 0.5 # range [0.0, 1.0]
