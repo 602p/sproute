@@ -28,16 +28,14 @@ def get_rx_dev(phys_sr):
 
 phys_sr = 48000  # sampling rate, Hz, must be integer
 
-downscale = 2
-
-bit_clk = 0.00575 * downscale
+bit_clk = 0.007
 tx_bit_clk = bit_clk * 1.05 #* 30
 
 phys_blk_time = bit_clk
 interpolate_factor = 1
 window_blks = 20
 
-bin_coalesce = int(3 * downscale * (0.95 if downscale!=1 else 1))
+bin_coalesce = 5
 simul_tones = 1
 
 phys_blk_size = int(phys_blk_time * phys_sr)
