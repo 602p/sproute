@@ -20,6 +20,8 @@ message = "" \
 
 
 def get_tx_dev(phys_sr):
+    return None
+
     if os.name == 'nt': return None
 
     for i, dev in enumerate(sounddevice.query_devices()):
@@ -28,6 +30,8 @@ def get_tx_dev(phys_sr):
             return i
 
 def get_rx_dev(phys_sr):
+    return None
+
     if os.name == 'nt': return None
 
     for i, dev in enumerate(sounddevice.query_devices()):
@@ -43,6 +47,7 @@ tx_bit_clk = bit_clk * 1.1 # * 20 #* 30
 phys_blk_time = bit_clk
 interpolate_factor = 1
 window_blks = 16
+agree_blocks_req = 0.4
 
 bin_coalesce = 2
 simul_tones = 1
@@ -99,29 +104,3 @@ def tones_for_byte(b):
 def byte_for_tones(ts):
     return symbols.index(set(ts))
 
-ptt_tone_volume = 1
-
-def gen_samples(tones, duration, volume=0.8, ptt_tone=True):
-    # volume = 0.5 # range [0.0, 1.0]
-    # duration = 0.5  # in seconds, may be float
-    # f = 1000.0  # sine frequency, Hz, may be float
-
-    volume *= (random.random() / 3) + 0.5
-
-    # generate samples, note conversion to float32 array
-    num_samples = int(phys_sr * duration)
-
-    out_samples = []
-    for i in range(0, num_samples):
-        samp = 0
-        for tone in tones:
-            samp += volume/len(tones) * math.sin(2 * math.pi * i * tone / phys_sr)
-
-        out_samples.append(samp)
-
-        if ptt_tone:
-            out_samples.append(ptt_tone_volume * math.sin(2 * math.pi * i * 1000 / phys_sr))
-        
-    output_bytes = array.array('f', out_samples).tobytes()
-
-    return output_bytes

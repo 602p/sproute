@@ -62,7 +62,7 @@ def get_padded_working_byte():
     s = bin(working_byte)[2:]
     return '-'*(8-working_byte_bits) + '0'*(working_byte_bits-len(s)) + s
 
-snr_cutoff = 2
+snr_cutoff = 1.5
 
 window = [b'\0'*chunk_size*4] * window_blks
 
@@ -125,7 +125,7 @@ while 1:
 
         print('RX SYM:', b, '/', ''.join(map(str, symwin)))
 
-        if len([x for x in symwin if x==b]) >= len(symwin)*0.4:
+        if len([x for x in symwin if x==b]) >= len(symwin)*agree_blocks_req:
             last_lock_time = now
             print('LOCK SYM:', b)
 
