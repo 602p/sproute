@@ -12,7 +12,7 @@ message = "" \
     "This longer message sent using a" \
     "\nhomebrew audio interface and" \
     "\nhomebrew digimode DE KF0CGO." \
-    "\nNow pushing ~500bit/s ..." \
+    "\nNow over 520bit/s ..." \
     "\nMinor improvement via coherent" \
     "\nFSK tones. But hey, half a kbps!" \
     "\n ~~ (:3) (:3) (:3) ~~ \n"
@@ -41,7 +41,7 @@ def get_rx_dev(phys_sr):
 phys_sr = 48000  # sampling rate, Hz, must be integer
 
 bit_clk = 0.004
-tx_bit_clk = bit_clk * 1.1 # * 20 #* 30
+tx_bit_clk = bit_clk * 1.05 # * 20 #* 30
 
 phys_blk_time = bit_clk
 interpolate_factor = 1
