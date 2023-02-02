@@ -2,7 +2,7 @@ import pygame
 
 pygame.init()
 
-screen = pygame.display.set_mode((1920, 1080))
+screen = pygame.display.set_mode((1920, 1200))
 
 import array
 import math
@@ -62,7 +62,7 @@ def get_padded_working_byte():
     s = bin(working_byte)[2:]
     return '-'*(8-working_byte_bits) + '0'*(working_byte_bits-len(s)) + s
 
-snr_cutoff = 3.8
+snr_cutoff = 2
 
 window = [b'\0'*chunk_size*4] * window_blks
 
@@ -122,7 +122,6 @@ while 1:
 
         symwin.append(b)
         del symwin[0]
-
 
         print('RX SYM:', b, '/', ''.join(map(str, symwin)))
 

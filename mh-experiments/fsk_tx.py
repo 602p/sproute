@@ -12,10 +12,12 @@ p = pyaudio.PyAudio()
 # message = "This message sent using a homebrew\naudio interface and homebrew\nFSK digimode DE KF0CGO.\nOver just Baofengs!\n ~~ (:3) (:3) (:3) ~~"
 # message = "ABCD" * 10
 
-nsyms = len(symbols)
-assert(nsyms-1 == 4)
+# message = message.split('\n')[0]
 
-frames = [('[LEAD]', 0, 0)] * 10
+nsyms = len(symbols)
+assert(nsyms-1 >= 4)
+
+frames = [('[LEAD]', 0, 0)] * 40
 for b in message.encode('utf-8'):
     for n in ([(b>>6) & 0b11, (b >> 4) & 0b11, (b >> 2) & 0b11, b & 0b11]):
         last = frames[-1][-1]
@@ -37,6 +39,12 @@ for char, nybble, sym in frames:
     print('C:', char, 'NYB:', bin(nybble), 'TX SYM:', sym)
     ts = tones_for_byte(sym)
     output += gen_samples(ts, tx_bit_clk)
+
+# for _ in range(10):
+#     for sym in symbols:
+#         output += gen_samples(sym, tx_bit_clk)
+
+input("READY")
 
 stream.write(output)
 
