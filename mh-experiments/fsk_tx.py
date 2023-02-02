@@ -23,7 +23,7 @@ def gen_samples(tones, duration, volume=0.8, ptt_tone=True):
     samp_per_wave = phys_sr / tone
 
     # num_samples = int(phys_sr * duration)
-    num_samples = int(samp_per_wave * math.floor((phys_sr * duration) / samp_per_wave))
+    num_samples = int(samp_per_wave * (math.floor((phys_sr * duration) / samp_per_wave)))
     # num_samples = math.ceil(samp_per_wave) * 9
 
     out_samples = []

@@ -12,10 +12,9 @@ message = "" \
     "This longer message sent using a" \
     "\nhomebrew audio interface and" \
     "\nhomebrew digimode DE KF0CGO." \
-    "\nNow pushing ~450bit/s ..." \
-    "\nGetting to a speed you might" \
-    "\nimagine using to do something" \
-    "\nfun on the radio!" \
+    "\nNow pushing ~500bit/s ..." \
+    "\nMinor improvement via coherent" \
+    "\nFSK tones. But hey, half a kbps!" \
     "\n ~~ (:3) (:3) (:3) ~~ \n"
 
 
